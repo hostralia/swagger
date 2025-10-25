@@ -1,0 +1,294 @@
+openapi: 3.0.3
+info:
+  title: Swagger Demo - Users & Tasks API
+  version: 1.0.0
+  description: Two MongoDB-backed collections (users, tasks) with full CRUD.
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Users
+    description: Manage users
+  - name: Tasks
+    description: Manage tasks
+
+paths:
+  /api/users:
+    get:
+      tags: [Users]
+      summary: List users
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/User" }
+    post:
+      tags: [Users]
+      summary: Create a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewUser" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /api/users/{id}:
+    parameters:
+      - $ref: "#/components/parameters/ObjectId"
+    get:
+      tags: [Users]
+      summary: Get user by id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    put:
+      tags: [Users]
+      summary: Replace user (full update)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateUser" }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    delete:
+      tags: [Users]
+      summary: Delete user
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /api/tasks:
+    get:
+      tags: [Tasks]
+      summary: List tasks
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+        - in: query
+          name: completed
+          schema: { type: boolean }
+          description: Optional filter by completion status
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Task" }
+    post:
+      tags: [Tasks]
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewTask" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Task" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /api/tasks/{id}:
+    parameters:
+      - $ref: "#/components/parameters/ObjectId"
+    get:
+      tags: [Tasks]
+      summary: Get task by id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Task" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    put:
+      tags: [Tasks]
+      summary: Replace task (full update)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateTask" }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Task" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    delete:
+      tags: [Tasks]
+      summary: Delete task
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+components:
+  parameters:
+    ObjectId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+        pattern: "^[a-fA-F0-9]{24}$"
+        example: "64f2a8c2b7a1d9c0e4d8a123"
+      description: MongoDB ObjectId (24 hex characters)
+    Page:
+      in: query
+      name: page
+      schema: { type: integer, minimum: 1, default: 1 }
+      description: Page number (1-based)
+    Limit:
+      in: query
+      name: limit
+      schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+      description: Page size
+
+  schemas:
+    User:
+      type: object
+      required: [id, email, name]
+      properties:
+        id:
+          type: string
+          example: "64f2a8c2b7a1d9c0e4d8a123"
+        email:
+          type: string
+          format: email
+          example: "jane@example.com"
+        name:
+          type: string
+          example: "Jane Doe"
+    NewUser:
+      type: object
+      required: [email, name]
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+    UpdateUser:
+      type: object
+      required: [email, name]
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+
+    Task:
+      type: object
+      required: [id, title, completed]
+      properties:
+        id:
+          type: string
+          example: "64f2a8c2b7a1d9c0e4d8a456"
+        title:
+          type: string
+          example: "Write docs"
+        completed:
+          type: boolean
+          example: false
+        userId:
+          type: string
+          description: Optional owner (User ObjectId)
+          example: "64f2a8c2b7a1d9c0e4d8a123"
+    NewTask:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        completed:
+          type: boolean
+          default: false
+        userId:
+          type: string
+          description: Optional owner (User ObjectId)
+    UpdateTask:
+      type: object
+      required: [title, completed]
+      properties:
+        title:
+          type: string
+        completed:
+          type: boolean
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Not found"
