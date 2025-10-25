@@ -1,0 +1,165 @@
+openapi: 3.0.3
+info:
+  title: Swagger Demo - Tasks API
+  version: 1.0.0
+  description: Simple CRUD API for tasks, documented with OpenAPI/Swagger.
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Tasks
+    description: Manage to-do tasks
+
+paths:
+  /api/tasks:
+    get:
+      tags: [Tasks]
+      summary: List tasks
+      description: Returns all tasks.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Task" }
+              examples:
+                sample:
+                  value:
+                    - id: "t_1"
+                      title: "Write docs"
+                      completed: false
+                    - id: "t_2"
+                      title: "Ship feature"
+                      completed: true
+    post:
+      tags: [Tasks]
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewTask" }
+            examples:
+              sample:
+                value:
+                  title: "New task from Swagger UI"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Task" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /api/tasks/{id}:
+    parameters:
+      - $ref: "#/components/parameters/TaskId"
+    get:
+      tags: [Tasks]
+      summary: Get task by id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Task" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    put:
+      tags: [Tasks]
+      summary: Replace a task (full update)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateTask" }
+            examples:
+              sample:
+                value:
+                  title: "Updated title"
+                  completed: true
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Task" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    delete:
+      tags: [Tasks]
+      summary: Delete a task
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+components:
+  parameters:
+    TaskId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+        example: "t_1"
+      description: The task identifier.
+  schemas:
+    Task:
+      type: object
+      required: [id, title, completed]
+      properties:
+        id:
+          type: string
+          example: "t_123"
+        title:
+          type: string
+          example: "Write docs"
+        completed:
+          type: boolean
+          example: false
+    NewTask:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          example: "New task from Swagger UI"
+    UpdateTask:
+      type: object
+      required: [title, completed]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          example: "Updated title"
+        completed:
+          type: boolean
+          example: true
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Not found"
