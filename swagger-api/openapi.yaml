@@ -1,0 +1,271 @@
+openapi: 3.0.3
+info:
+  title: Swagger Demo - Customers & Products API
+  version: 1.0.0
+  description: Two MongoDB-backed collections with full CRUD.
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Customers
+  - name: Products
+
+paths:
+  /api/customers:
+    get:
+      tags: [Customers]
+      summary: List customers
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Customer" }
+    post:
+      tags: [Customers]
+      summary: Create customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewCustomer" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Customer" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /api/customers/{id}:
+    parameters:
+      - $ref: "#/components/parameters/ObjectId"
+    get:
+      tags: [Customers]
+      summary: Get customer by id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Customer" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    put:
+      tags: [Customers]
+      summary: Replace customer (full update)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateCustomer" }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Customer" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    delete:
+      tags: [Customers]
+      summary: Delete customer
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /api/products:
+    get:
+      tags: [Products]
+      summary: List products
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+        - in: query
+          name: inStock
+          schema: { type: boolean }
+          description: Optional filter by stock status
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Product" }
+    post:
+      tags: [Products]
+      summary: Create product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewProduct" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Product" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /api/products/{id}:
+    parameters:
+      - $ref: "#/components/parameters/ObjectId"
+    get:
+      tags: [Products]
+      summary: Get product by id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Product" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    put:
+      tags: [Products]
+      summary: Replace product (full update)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateProduct" }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Product" }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    delete:
+      tags: [Products]
+      summary: Delete product
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+components:
+  parameters:
+    ObjectId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+        pattern: "^[a-fA-F0-9]{24}$"
+        example: "64f2a8c2b7a1d9c0e4d8a123"
+      description: MongoDB ObjectId
+    Page:
+      in: query
+      name: page
+      schema: { type: integer, minimum: 1, default: 1 }
+      description: Page number
+    Limit:
+      in: query
+      name: limit
+      schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+      description: Page size
+
+  schemas:
+    Customer:
+      type: object
+      required: [id, name, email]
+      properties:
+        id:       { type: string, example: "64f2a8c2b7a1d9c0e4d8a123" }
+        name:     { type: string, example: "Jane Doe" }
+        email:    { type: string, format: email, example: "jane@example.com" }
+        phone:    { type: string, example: "+61 412 345 678" }
+        address:  { type: string, example: "1 George St, Sydney NSW" }
+    NewCustomer:
+      type: object
+      required: [name, email]
+      properties:
+        name:    { type: string }
+        email:   { type: string, format: email }
+        phone:   { type: string }
+        address: { type: string }
+    UpdateCustomer:
+      type: object
+      required: [name, email]
+      properties:
+        name:    { type: string }
+        email:   { type: string, format: email }
+        phone:   { type: string }
+        address: { type: string }
+
+    Product:
+      type: object
+      required: [id, name, price, inStock]
+      properties:
+        id:          { type: string, example: "64f2a8c2b7a1d9c0e4d8a456" }
+        name:        { type: string, example: "Comfort Sneakers" }
+        price:       { type: number, format: float, example: 129.95 }
+        inStock:     { type: boolean, example: true }
+        description: { type: string, example: "Lightweight daily wear shoes" }
+    NewProduct:
+      type: object
+      required: [name, price]
+      properties:
+        name:        { type: string }
+        price:       { type: number, format: float }
+        inStock:     { type: boolean, default: true }
+        description: { type: string }
+    UpdateProduct:
+      type: object
+      required: [name, price, inStock]
+      properties:
+        name:        { type: string }
+        price:       { type: number, format: float }
+        inStock:     { type: boolean }
+        description: { type: string }
+
+    Error:
+      type: object
+      properties:
+        error: { type: string, example: "Not found" }

@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "68fd624d0c34c2eed8f92c04"
+  },
+  "name": "Comfort Sneakers",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-10-25T23:50:37.081Z"
+  },
+  "description": "Lightweight daily wear shoes",
+  "inStock": true,
+  "price": 129.95,
+  "updatedAt": {
+    "$date": "2025-10-25T23:50:37.081Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68fd624d0c34c2eed8f92c05"
+  },
+  "name": "Trail Runner Pro",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-10-25T23:50:37.081Z"
+  },
+  "description": "Grip and cushioning for trails",
+  "inStock": true,
+  "price": 189,
+  "updatedAt": {
+    "$date": "2025-10-25T23:50:37.081Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68fd624d0c34c2eed8f92c06"
+  },
+  "name": "Office Loafers",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-10-25T23:50:37.081Z"
+  },
+  "description": "Classic, comfy, formal-friendly",
+  "inStock": false,
+  "price": 149.5,
+  "updatedAt": {
+    "$date": "2025-10-25T23:50:37.081Z"
+  }
+}]

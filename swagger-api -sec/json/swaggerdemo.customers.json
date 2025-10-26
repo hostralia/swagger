@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "68fd624d0c34c2eed8f92bff"
+  },
+  "email": "jane@example.com",
+  "__v": 0,
+  "address": "1 George St, Sydney NSW",
+  "createdAt": {
+    "$date": "2025-10-25T23:50:36.955Z"
+  },
+  "name": "Jane Doe",
+  "phone": "+61 412 345 678",
+  "updatedAt": {
+    "$date": "2025-10-25T23:50:36.955Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68fd624d0c34c2eed8f92c00"
+  },
+  "email": "john@example.com",
+  "__v": 0,
+  "address": "200 Pitt St, Sydney NSW",
+  "createdAt": {
+    "$date": "2025-10-25T23:50:36.955Z"
+  },
+  "name": "John Smith",
+  "phone": "+61 400 111 222",
+  "updatedAt": {
+    "$date": "2025-10-25T23:50:36.955Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68fd624d0c34c2eed8f92c01"
+  },
+  "email": "ayesha@example.com",
+  "__v": 0,
+  "address": "5 King St, Sydney NSW",
+  "createdAt": {
+    "$date": "2025-10-25T23:50:36.955Z"
+  },
+  "name": "Ayesha Mahveen",
+  "phone": "+61 433 987 654",
+  "updatedAt": {
+    "$date": "2025-10-25T23:50:36.955Z"
+  }
+}]

@@ -1,8 +1,0 @@
-# Node
-node_modules/
-npm-debug.log
-.env
-
-# IDEs / editors
-.vscode/
-.idea/
