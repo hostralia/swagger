@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Students API
+  version: 1.0.0
+  description: Simple CRUD API for student records.
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Students
+    description: Manage student records
+
+paths:
+  /api/students:
+    get:
+      tags: [Students]
+      summary: List students
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Student" }
+              examples:
+                sample:
+                  value:
+                    - id: "f3e2d8e8-558e-4f77-8c1b-9b4a7e2e2b11"
+                      firstName: "Alice"
+                      lastName: "Nguyen"
+                      email: "alice@example.com"
+                      cohort: "2025A"
+    post:
+      tags: [Students]
+      summary: Create a student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentCreate"
+            examples:
+              sample:
+                value:
+                  firstName: "Maya"
+                  lastName: "Singh"
+                  email: "maya@example.com"
+                  cohort: "2026A"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+
+  /api/students/{id}:
+    get:
+      tags: [Students]
+      summary: Get a student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "404":
+          description: Not Found
+    put:
+      tags: [Students]
+      summary: Update a student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentCreate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "404":
+          description: Not Found
+    delete:
+      tags: [Students]
+      summary: Delete a student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        firstName: { type: string }
+        lastName: { type: string }
+        email: { type: string, format: email }
+        cohort: { type: string, nullable: true }
+      required: [id, firstName, lastName, email]
+    StudentCreate:
+      type: object
+      properties:
+        firstName: { type: string }
+        lastName: { type: string }
+        email: { type: string, format: email }
+        cohort: { type: string, nullable: true }
+      required: [firstName, lastName, email]

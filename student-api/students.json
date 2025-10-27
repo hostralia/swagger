@@ -1,0 +1,62 @@
+[
+  {
+    "firstName": "Aisha",
+    "lastName": "Rahman",
+    "email": "aisha.rahman@example.com",
+    "cohort": "2025A"
+  },
+  {
+    "firstName": "Daniel",
+    "lastName": "Peterson",
+    "email": "daniel.peterson@example.com",
+    "cohort": "2025A"
+  },
+  {
+    "firstName": "Lina",
+    "lastName": "Kassem",
+    "email": "lina.kassem@example.com",
+    "cohort": "2025B"
+  },
+  {
+    "firstName": "Mohammed",
+    "lastName": "Hassan",
+    "email": "mohammed.hassan@example.com",
+    "cohort": "2025B"
+  },
+  {
+    "firstName": "Sarah",
+    "lastName": "Turner",
+    "email": "sarah.turner@example.com",
+    "cohort": "2026A"
+  },
+  {
+    "firstName": "Zain",
+    "lastName": "Al-Khalili",
+    "email": "zain.alkhalili@example.com",
+    "cohort": "2026A"
+  },
+  {
+    "firstName": "Elena",
+    "lastName": "Vargas",
+    "email": "elena.vargas@example.com",
+    "cohort": "2026B"
+  },
+  {
+    "firstName": "Tariq",
+    "lastName": "Omar",
+    "email": "tariq.omar@example.com",
+    "cohort": "2026B"
+  },
+  {
+    "firstName": "Natalie",
+    "lastName": "Brooks",
+    "email": "natalie.brooks@example.com",
+    "cohort": "2027A"
+  },
+  {
+    "firstName": "Khaled",
+    "lastName": "Jaber",
+    "email": "khaled.jaber@example.com",
+    "cohort": "2027A"
+  }
+]
